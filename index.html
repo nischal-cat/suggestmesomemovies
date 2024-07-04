@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Suggestions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-pane">
+            <h1>Suggest a Movie</h1>
+            <form id="name-form">
+                <input type="text" id="name-input" placeholder="Enter Your Name" autocomplete="off" required>
+                <button type="submit">Save Name</button>
+            </form>
+            <form id="movie-form">
+                <input type="text" id="suggestion-input" placeholder="Type movie name..." autocomplete="off" required>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="suggestions"></div>
+        </div>
+        <div class="right-pane">
+            <h2>Movie List</h2>
+            <div class="filters">
+                <button class="filter-btn" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="nation">Nation</button>
+                <button class="filter-btn" data-filter="category">Category</button>
+            </div>
+            <div id="movie-list"></div>
+            <button id="suggest-btn">Suggest</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

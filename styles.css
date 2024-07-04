@@ -1,0 +1,276 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5; /* Light gray background for a clean and modern look */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    height: 70vh;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for a more premium feel */
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff; /* White background for the container */
+    transition: all 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+}
+
+.left-pane {
+    flex: 3;
+    padding: 20px;
+    background: #2c3e50; /* Deep blue background */
+    color: #ecf0f1; /* Light gray text for contrast */
+    border-right: 1px solid #34495e; /* Slightly lighter blue for the border */
+}
+
+.right-pane {
+    flex: 2;
+    padding: 20px;
+    background: #ecf0f1; /* Very light gray background */
+    color: #333;
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: calc(100% - 40px);
+    padding: 12px;
+    border: 2px solid #34495e; /* Deep blue border */
+    border-radius: 6px;
+    box-sizing: border-box;
+    background: #fff;
+    color: #333;
+    font-size: 16px;
+}
+
+button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    background: #f39c12; /* Gold button background */
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background: #e67e22; /* Darker gold on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+#suggestions {
+    background: #34495e; /* Deep blue for suggestion dropdown */
+    padding: 12px;
+    border-radius: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+#suggestions div {
+    padding: 12px;
+    color: #ecf0f1; /* Light gray text */
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#suggestions div:hover {
+    background: #1f2937; /* Darker blue on hover */
+}
+
+/* Movie List Styles */
+.right-pane h2 {
+    margin-top: 0;
+    color: #2c3e50; /* Deep blue text for the heading */
+}
+
+#movie-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 300px; /* Set a max height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+#movie-list div {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+#movie-list div:hover {
+    background: #f1c40f; /* Gold background on hover */
+    color: #fff; /* White text */
+}
+
+#movie-list img {
+    width: 60px;
+    height: 90px;
+    border-radius: 6px;
+    margin-right: 12px;
+}
+
+#movie-list span {
+    flex: 1;
+    font-weight: bold;
+}
+
+.remove-btn {
+    background: #e74c3c; /* Red background for remove button */
+    color: #fff;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.remove-btn:hover {
+    background: #c0392b; /* Darker red on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Filter Buttons */
+.filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 12px 18px;
+    border: 2px solid #2c3e50; /* Deep blue border for filter buttons */
+    border-radius: 6px;
+    background: #fff;
+    color: #2c3e50; /* Deep blue text */
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: #2c3e50; /* Deep blue background on hover */
+    color: #fff; /* White text */
+}
+
+#authorize-btn {
+    margin-top: 20px;
+    background: #27ae60; /* Green background for authorize button */
+}
+
+#authorize-btn:hover {
+    background: #1e8449; /* Darker green on hover */
+}
+
+#suggest-btn {
+    margin-top: 10px;
+    background: #8e44ad; /* Purple background for suggest button */
+}
+
+#suggest-btn:hover {
+    background: #7d3f8c; /* Darker purple on hover */
+}
+
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        width: 90%;
+        height: auto;
+    }
+
+    .left-pane {
+        flex: 1;
+        padding: 15px;
+        border-right: none;
+        border-bottom: 1px solid #34495e; /* Add a border at the bottom for separation */
+    }
+
+    .right-pane {
+        flex: 1;
+        padding: 15px;
+        border: none; /* Remove the right border */
+    }
+
+    .filters {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .filter-btn {
+        width: 100%;
+    }
+
+    #movie-list {
+        max-height: 200px; /* Reduce max height for mobile */
+    }
+
+    #movie-list img {
+        width: 50px; /* Smaller movie poster images */
+        height: 75px;
+    }
+
+    #suggestions {
+        max-height: 120px; /* Reduce max height for mobile */
+    }
+
+    .remove-btn {
+        padding: 4px 8px; /* Smaller padding for mobile */
+    }
+
+    button {
+        padding: 10px 18px; /* Slightly smaller padding */
+        font-size: 14px; /* Smaller font size */
+    }
+}
+/* mobile responsive  */
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        height: auto;
+    }
+
+    .left-pane h1 {
+        font-size: 24px; /* Adjust heading size for small screens */
+    }
+
+    input[type="text"] {
+        width: calc(100% - 36px); /* Adjust input width for small screens */
+    }
+
+    button {
+        padding: 8px 16px; /* Further reduce button size for small screens */
+        font-size: 12px; /* Smaller font size */
+    }
+
+    #movie-list img {
+        width: 40px; /* Even smaller movie poster images */
+        height: 60px;
+    }
+
+    .filter-btn {
+        font-size: 12px; /* Smaller text size for filter buttons */
+    }
+}
