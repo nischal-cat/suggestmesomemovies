@@ -23,6 +23,7 @@
                 <button type="submit">Submit</button>
             </form>
             <div id="suggestions"></div>
+            <div id="confirmation-message" class="message"></div>  <!-- Add this line -->
         </div>
         <div class="right-pane">
             <h2>Movie List</h2>
@@ -33,14 +34,14 @@
             </div> -->
             <div id="movie-list"></div>
             <button id="suggest-btn">Suggest</button>
+            <button id="clear-btn" style="display:none;">Clear</button>
         </div>
     </div>
-     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function(){
-            emailjs.init("zKm-qn2VvBxWu3vfG"); 
-        })();
-    </script>
-     <script src="script.js"></script>
+   
+    <!-- <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@googleapis/sheets@v1.2.0/dist/sheets.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@googleapis/auth@1.0.0/dist/auth.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script> -->
+    <script src="script.js"></script>
 </body>
 </html>
