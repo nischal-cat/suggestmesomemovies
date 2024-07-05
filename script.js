@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const API_KEY = 'b239c0483d45a615d5ce3ddf6b998bec';
-    const API_URL = 'https://api.themoviedb.org/3/search/movie';
+    const API_KEY = '718e3dfc3b3d5c3de1d5244ba50a0016';
+    const FORM_ID = '241862001035443';
+    const API_URL_JOTFORM = `https://api.jotform.com/form/${FORM_ID}/submissions?apiKey=${API_KEY}`;
+
+    const API_KEY_TMDB = 'b239c0483d45a615d5ce3ddf6b998bec';
+    const API_URL_TMDB = 'https://api.themoviedb.org/3/search/movie';
     const IMAGE_URL = 'https://image.tmdb.org/t/p/w92';
-    const EMAILJS_SERVICE_ID = 'service_igtd8xy';
-    const EMAILJS_TEMPLATE_ID = 'template_5hjzjfl';  // Replace with your actual template ID
-    const EMAILJS_PUBLIC_KEY = 'zKm-qn2VvBxWu3vfG'; // Replace with your actual public key
 
     const nameForm = document.getElementById("name-form");
     const movieForm = document.getElementById("movie-form");
@@ -14,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const movieListDiv = document.getElementById("movie-list");
     const clearBtn = document.getElementById("clear-btn");
     const suggestBtn = document.getElementById("suggest-btn");
+    const confirmationMessage = document.getElementById("confirmation-message");
 
     let userName = "";
     let movieList = [];
@@ -60,44 +62,51 @@ document.addEventListener("DOMContentLoaded", function() {
     clearBtn.addEventListener("click", function() {
         suggestionInput.value = "";
         suggestionsDiv.innerHTML = "";
+        movieListDiv.innerHTML = "";  // Clear the movie list
+        movieList = [];  // Reset the movie list
+        suggestBtn.style.display = "none";  // Hide the suggest button
+        clearBtn.style.display = "none";  // Hide the clear button
+        hasSuggested = false;  // Reset suggestion status
+        confirmationMessage.textContent = "";  // Clear the confirmation message
     });
 
     // Handle the suggest button click event
     suggestBtn.addEventListener("click", function() {
         if (hasSuggested) {
-            alert("You have already suggested movies. You can only suggest once.");
+            alert("You have already suggested movies. You can only suggest once. Please refresh to suggest more movies.");
             return;
         }
         if (movieList.length === 0) {
             alert("No movies to suggest.");
             return;
         }
-        sendEmailJS(userName, movieList);
+        addMoviesToJotForm(userName, movieList);
     });
-// Fetch movies from the TMDb API
-function fetchMovies(query) {
-    fetch(`${API_URL}?api_key=${API_KEY}&query=${query}`)
-        .then(response => response.json())
-        .then(data => {
-            suggestionsDiv.innerHTML = "";
-            data.results.forEach(movie => {
-                const movieDiv = document.createElement('div');
-                movieDiv.innerHTML = `
-                    <span>${movie.title}</span>
-                `;
-                movieDiv.addEventListener('click', () => {
-                    suggestionInput.value = movie.title;
-                    suggestionsDiv.innerHTML = "";
+
+    // Fetch movies from the TMDb API
+    function fetchMovies(query) {
+        fetch(`${API_URL_TMDB}?api_key=${API_KEY_TMDB}&query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                suggestionsDiv.innerHTML = "";
+                data.results.forEach(movie => {
+                    const movieDiv = document.createElement('div');
+                    movieDiv.innerHTML = `
+                        <span>${movie.title}</span>
+                    `;
+                    movieDiv.addEventListener('click', () => {
+                        suggestionInput.value = movie.title;
+                        suggestionsDiv.innerHTML = "";
+                    });
+                    suggestionsDiv.appendChild(movieDiv);
                 });
-                suggestionsDiv.appendChild(movieDiv);
-            });
-        })
-        .catch(error => console.error('Error fetching movies:', error));
-}
+            })
+            .catch(error => console.error('Error fetching movies:', error));
+    }
 
     // Add a movie to the movie list
     function addMovieToList(userName, movieTitle) {
-        fetch(`${API_URL}?api_key=${API_KEY}&query=${movieTitle}`)
+        fetch(`${API_URL_TMDB}?api_key=${API_KEY_TMDB}&query=${movieTitle}`)
             .then(response => response.json())
             .then(data => {
                 if (data.results.length > 0) {
@@ -106,7 +115,7 @@ function fetchMovies(query) {
                     movieDiv.innerHTML = `
                         <img src="${IMAGE_URL}${movie.poster_path}" alt="${movie.title}">
                         <span>${movie.title}</span>
-                        <button class="remove-btn">remove</button>
+                        <button class="remove-btn">Remove</button>
                     `;
                     movieDiv.querySelector('.remove-btn').addEventListener('click', () => {
                         movieList = movieList.filter(item => item.title !== movie.title);
@@ -127,17 +136,31 @@ function fetchMovies(query) {
             .catch(error => console.error('Error fetching movie details:', error));
     }
 
-    // Send the movie suggestions via EmailJS
-    function sendEmailJS(userName, movieList) {
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-            from_name: userName,
-            to_email: 'surrealnischal@gmail.com',
-            subject: 'Movie Suggestions',
-            message: `User: ${userName}\nSuggested Movies:\n${movieList.map(movie => movie.title).join("\n")}`
-        }, EMAILJS_PUBLIC_KEY)
+    // Add the movies and user name to JotForm
+    function addMoviesToJotForm(userName, movieList) {
+        const movies = movieList.map(movie => movie.title).join(", ");
+        const submissionData = {
+            "submission[21]": userName,  // Field ID for "Suggested by"
+            "submission[22]": movies  // Field ID for "Movies Suggested"
+        };
+
+        fetch(API_URL_JOTFORM, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(submissionData).toString()
+        })
         .then(response => {
-            console.log('Email sent!', response);
-            alert('Your movie suggestions have been sent!');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Movies added to JotForm:', data);  // Debugging line
+            confirmationMessage.className = 'message success-message';
+            confirmationMessage.textContent = "Thank you for your suggestion!";
             movieListDiv.innerHTML = "";
             movieList = [];
             suggestBtn.style.display = "none";
@@ -145,8 +168,9 @@ function fetchMovies(query) {
             hasSuggested = true;  // Mark as suggested
         })
         .catch(error => {
-            console.error('Error sending email:', error);
-            alert('Failed to send your suggestions. Please try again.');
+            console.error('Error adding movies to JotForm:', error);
+            confirmationMessage.className = 'message error-message';
+            confirmationMessage.textContent = "Failed to save your suggestions. Please try again.";
         });
     }
 });
